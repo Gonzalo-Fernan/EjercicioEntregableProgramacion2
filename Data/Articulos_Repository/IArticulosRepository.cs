@@ -10,8 +10,7 @@ namespace _421498_1w1_Gonzalo_Fernandez_Ejercicio_Entregable_1.Data.Articulos_Re
     public interface IArticulosRepository
     {
         List<Articulo> GetAll();
-        Articulo GetById(int id);
-        void Add(Articulo articulo);
+        Articulo GetById(int id); 
         void Update(Articulo articulo);
         void Delete(int id);
     }

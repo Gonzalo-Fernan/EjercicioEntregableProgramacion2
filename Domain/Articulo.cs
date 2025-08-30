@@ -11,13 +11,17 @@ namespace _421498_1w1_Gonzalo_Fernandez_Ejercicio_Entregable_1.Domain
         public int Codigo { get; set; }
         public string Nombre { get; set; }
         public double Precio_unitario { get; set; }
+        public int Activo { get; set; } = 1;
+
+
         public Articulo() { }
 
-        public Articulo(int codigo, string nombre, double precio_unitario)
+        public Articulo(int codigo, string nombre, double precio_unitario, int activo)
         {
             Codigo = codigo;
             Nombre = nombre;
             Precio_unitario = precio_unitario;
+            Activo = activo;
         }
 
         public override string ToString()

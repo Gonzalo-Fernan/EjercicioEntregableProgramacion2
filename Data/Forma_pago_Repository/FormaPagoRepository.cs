@@ -9,7 +9,11 @@ namespace _421498_1w1_Gonzalo_Fernandez_Ejercicio_Entregable_1.Data.Forma_pago_R
 {
     public class FormaPagoRepository : IFormaPagoRepository
     {
-        public FormaPagoRepository() { }
+        private IDataHelper _dataHelper;
+        public FormaPagoRepository(IDataHelper dataHelper)
+        {
+            _dataHelper = dataHelper;
+        }
         public List<Forma_pago> GetAll()
         {
             throw new NotImplementedException();

@@ -8,19 +8,26 @@ using _421498_1w1_Gonzalo_Fernandez_Ejercicio_Entregable_1.Domain;
 
 namespace _421498_1w1_Gonzalo_Fernandez_Ejercicio_Entregable_1.Data.Articulos_Repository
 {
-    public class ArtuculosRepository : IArticulosRepository
+    public class ArticulosRepository : IArticulosRepository
     {
+        private IDataHelper _dataHelper;
+
+        public ArticulosRepository(IDataHelper dataHelper)
+        {
+            _dataHelper = dataHelper;
+        }
         public List<Articulo> GetAll()
         {
             List<Articulo> articulos = new List<Articulo>();
-            DataTable table = DataHelper.GetInstance().ExecuteSPQuery("sp_GetAllArticulos");
+            DataTable table = _dataHelper.ExecuteSPQuery("sp_GetAllArticulos");
             foreach (DataRow row in table.Rows)
             {
                 Articulo articulo = new Articulo
                 {
                     Codigo = Convert.ToInt32(row["id_articulo"]),
                     Nombre = row["nombre"].ToString(),
-                    Precio_unitario = Convert.ToDouble(row["precio_unitario"])
+                    Precio_unitario = Convert.ToDouble(row["precio_unitario"]),
+                    Activo = Convert.ToInt32(row["activo"])
                 };
                 articulos.Add(articulo);
             }
@@ -33,12 +40,13 @@ namespace _421498_1w1_Gonzalo_Fernandez_Ejercicio_Entregable_1.Data.Articulos_Re
             Dictionary<string, object> parametros = new Dictionary<string, object>();
             parametros.Add("@id_articulo", id);
             
-            DataTable table = DataHelper.GetInstance().ExecuteSPQuery("sp_GetArticuloById", parametros);
+            DataTable table =_dataHelper.ExecuteSPQuery("sp_GetArticuloById", parametros);
             foreach (DataRow row in table.Rows) {
                 {
                     articulo.Codigo = Convert.ToInt32(row["id_articulo"]);
                     articulo.Nombre = row["nombre"].ToString();
                     articulo.Precio_unitario = Convert.ToDouble(row["precio_unitario"]);
+                    articulo.Activo = Convert.ToInt32(row["activo"]);
                 };
             }
             return articulo;
@@ -46,15 +54,36 @@ namespace _421498_1w1_Gonzalo_Fernandez_Ejercicio_Entregable_1.Data.Articulos_Re
         }
         public void Add(Articulo articulo)
         {
-            throw new NotImplementedException();
+           
+            _dataHelper.ExecuteSPNonQuery("sp_insertar_articulo", new Dictionary<string, object>
+            {
+                { "@nombre", articulo.Nombre },
+                { "@precio_unitario", articulo.Precio_unitario },
+                { "@activo", articulo.Activo }
+            });
+            
         }
         public void Update(Articulo articulo)
         {
-            throw new NotImplementedException();
+            _dataHelper.ExecuteSPNonQuery("sp_actualizar_articulo", new Dictionary<string, object>
+            {
+                { "@id_articulo", articulo.Codigo },
+                { "@nombre", articulo.Nombre },
+                { "@precio_unitario", articulo.Precio_unitario },
+                { "@activo", articulo.Activo }
+
+            });
+           
         }
         public void Delete(int id)
         {
-            throw new NotImplementedException();
+            _dataHelper.ExecuteSPNonQuery("sp_eliminar_articulo", new Dictionary<string, object>
+            {
+                { "@id_articulo", id },
+                { "Activo", 0 }
+
+            });
+           
         }
 
     }

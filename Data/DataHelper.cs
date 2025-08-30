@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace _421498_1w1_Gonzalo_Fernandez_Ejercicio_Entregable_1.Data
 {
-    public class DataHelper
+    public class DataHelper : IDataHelper
     {
         private static DataHelper _instance;
         private SqlConnection _connection;
@@ -54,6 +54,37 @@ namespace _421498_1w1_Gonzalo_Fernandez_Ejercicio_Entregable_1.Data
                 _connection.Close();
             }
             return table;
+        }
+        public int ExecuteSPNonQuery(string sp, Dictionary<string, object> parametros = null)
+        {
+            int rowsAffected = 0;
+            try
+            {
+                _connection.Open();
+                SqlCommand command = new SqlCommand(sp, _connection);
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = sp;
+               
+                if (parametros != null)
+                {
+                    foreach (var param in parametros)
+                    {
+                        command.Parameters.AddWithValue(param.Key, param.Value ?? DBNull.Value);
+                    }
+                }
+                rowsAffected = command.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                rowsAffected = -1;
+                // Indicar error
+
+            }
+            finally
+            {
+                _connection.Close();
+            }
+            return rowsAffected;
         }
     }
 }

@@ -12,15 +12,17 @@ namespace _421498_1w1_Gonzalo_Fernandez_Ejercicio_Entregable_1.Domain
         public DateTime Fecha { get; set; }
         public Forma_pago Forma_pago { get; set; }
         public string Cliente { get; set; }
+        public List<Detalle_factura> Detalles { get; set; }
 
         public Factura() { }
 
-        public Factura(int codigo, DateTime fecha, string cliente, Forma_pago forma_pago)
+        public Factura(int codigo, DateTime fecha, string cliente, Forma_pago forma_pago, List<Detalle_factura> detalles)
         {
             Codigo = codigo;
             Fecha = fecha;
             Cliente = cliente;
             Forma_pago = forma_pago;
+            Detalles = detalles;
         }
         public override string ToString()
         {
