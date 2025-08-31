@@ -11,12 +11,16 @@ namespace _421498_1w1_Gonzalo_Fernandez_Ejercicio_Entregable_1.Domain
         public int Codigo { get; set; }
         public string Tipo_pago { get; set; }
 
+        public int Activo { get; set; } = 1;
+
         public Forma_pago() { }
 
-        public Forma_pago(int Codigo, string Tipo_pago)
+        public Forma_pago(int codigo, string tipo_pago, int activo)
         {
-            this.Codigo = Codigo;
-            this.Tipo_pago = Tipo_pago;
+            Codigo = codigo;
+            Tipo_pago = tipo_pago;
+            Activo = activo;
+
         }
 
 

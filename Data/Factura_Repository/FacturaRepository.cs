@@ -51,20 +51,43 @@ namespace _421498_1w1_Gonzalo_Fernandez_Ejercicio_Entregable_1.Data.Factura_Repo
                 factura.Fecha = Convert.ToDateTime(row["fecha"]);
                 factura.Cliente = (string)row["cliente"];
                 factura.Detalles = new DetalleFacturaRepository(_dataHelper).GetAll().Where(d => d.Factura == Convert.ToInt32(row["id_factura"])).ToList();
+                factura.Activo = Convert.ToInt32(row["activo"]);
             }
             return factura;
         }
         public void Add(Factura factura)
         {
-            throw new NotImplementedException();
+            _dataHelper.ExecuteSPNonQuery("sp_insertar_factura", new Dictionary<string, object>
+            {
+                { "@id_forma_pago", factura.Forma_pago.Codigo },
+                { "@fecha", factura.Fecha },
+                { "@cliente", factura.Cliente },
+                {"@detalles", factura.Detalles },
+                { "@activo", 1   }
+            });
+            
         }
         public void Update(Factura factura)
         {
-            throw new NotImplementedException();
+            _dataHelper.ExecuteSPNonQuery("sp_update_factura", new Dictionary<string, object>
+            {
+                { "@id_factura", factura.Codigo },
+                { "@id_forma_pago", factura.Forma_pago.Codigo },
+                { "@fecha", factura.Fecha },
+                { "@cliente", factura.Cliente },
+                {"@detalles", factura.Detalles },
+                { "@activo", factura.Activo   }
+            });
+
         }
         public void Delete(int id)
         {
-            throw new NotImplementedException();
+            _dataHelper.ExecuteSPNonQuery("sp_delete_factura", new Dictionary<string, object>
+            {
+                { "@id_factura", id },
+                { "@activo", 0 }
+            });
+            
         }
     }
 }

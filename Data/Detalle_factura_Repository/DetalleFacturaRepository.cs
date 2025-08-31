@@ -37,19 +37,53 @@ namespace _421498_1w1_Gonzalo_Fernandez_Ejercicio_Entregable_1.Data.Detalle_fact
         }
         public Detalle_factura GetById(int id)
         {
-            throw new NotImplementedException();
+            Detalle_factura detalleFactura = new Detalle_factura();
+            Dictionary<string, object> parametros = new Dictionary<string, object>();
+            parametros.Add("@id_detalle_factura", id);
+            DataTable table = _dataHelper.ExecuteSPQuery("sp_GetDetalleFacturaById", parametros);
+            foreach (DataRow row in table.Rows)
+            {
+                detalleFactura.Codigo = Convert.ToInt32(row["id_detalle_factura"]);
+                detalleFactura.Articulo = new ArticulosRepository(_dataHelper).GetById(Convert.ToInt32(row["id_articulo"]));
+                detalleFactura.Factura = Convert.ToInt32(row["id_factura"]);
+                detalleFactura.Cantidad = Convert.ToInt32(row["cantidad"]);
+                detalleFactura.Activo = Convert.ToInt32(row["activo"]);
+            }
+            return detalleFactura;
+
+           
         }
         public void Add(Detalle_factura detalleFactura)
         {
-            throw new NotImplementedException();
+            _dataHelper.ExecuteSPNonQuery("sp_insertar_detalle_factura", new Dictionary<string, object>
+            {
+                { "@id_articulo", detalleFactura.Articulo.Codigo },
+                { "@id_factura", detalleFactura.Factura },
+                { "@cantidad", detalleFactura.Cantidad },
+                { "@activo", detalleFactura.Activo   }
+            });
+            
         }
         public void Update(Detalle_factura detalleFactura)
         {
-            throw new NotImplementedException();
+            _dataHelper.ExecuteSPNonQuery("sp_actualizar_detalle_factura", new Dictionary<string, object>
+            {
+                { "@id_detalle_factura", detalleFactura.Codigo },
+                { "@id_articulo", detalleFactura.Articulo.Codigo },
+                { "@id_factura", detalleFactura.Factura },
+                { "@cantidad", detalleFactura.Cantidad },
+                { "@activo", detalleFactura.Activo }
+            });
+
         }
         public void Delete(int id)
         {
-            throw new NotImplementedException();
+            _dataHelper.ExecuteSPNonQuery("sp_eliminar_detalle_factura", new Dictionary<string, object>
+            {
+                { "@id_detalle_factura", id },
+                { "@activo", 0   }
+            });
+            
         }
 
     }

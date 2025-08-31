@@ -13,6 +13,7 @@ namespace _421498_1w1_Gonzalo_Fernandez_Ejercicio_Entregable_1.Domain
         public Forma_pago Forma_pago { get; set; }
         public string Cliente { get; set; }
         public List<Detalle_factura> Detalles { get; set; }
+        public int Activo { get; set; } = 1;
 
         public Factura() { }
 
