@@ -57,15 +57,28 @@ namespace _421498_1w1_Gonzalo_Fernandez_Ejercicio_Entregable_1.Data.Factura_Repo
         }
         public void Add(Factura factura)
         {
-            _dataHelper.ExecuteSPNonQuery("sp_insertar_factura", new Dictionary<string, object>
+            var parametros = new Dictionary<string, object>
             {
                 { "@id_forma_pago", factura.Forma_pago.Codigo },
                 { "@fecha", factura.Fecha },
                 { "@cliente", factura.Cliente },
-                {"@detalles", factura.Detalles },
-                { "@activo", 1   }
-            });
+                { "@activo", 1 }
+            };
             
+           int result = _dataHelper.ExecuteSPNonQuery("sp_insertar_factura", parametros);
+        
+           factura.Codigo = result;
+            
+            foreach (var detalle in factura.Detalles)
+            {
+                _dataHelper.ExecuteSPNonQuery("sp_insertar_detalle_factura", new Dictionary<string, object>
+                {
+                    { "@id_articulo", detalle.Articulo.Codigo },
+                    { "@id_factura", factura.Codigo },
+                    { "@cantidad", detalle.Cantidad },
+                    { "@activo", 1 }
+                });
+            }
         }
         public void Update(Factura factura)
         {

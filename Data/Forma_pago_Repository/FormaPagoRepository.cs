@@ -39,15 +39,15 @@ namespace _421498_1w1_Gonzalo_Fernandez_Ejercicio_Entregable_1.Data.Forma_pago_R
             Forma_pago formaPago = new Forma_pago();
             Dictionary<string, object> parameters = new Dictionary<string, object>
             {
-                { "@id", id }
+                { "@id_forma_pago", id }
             };
-            DataTable table = _dataHelper.ExecuteSPQuery("sp_GetFacturaById", parameters);
+            DataTable table = _dataHelper.ExecuteSPQuery("sp_GetFormaPagoById", parameters);
             if (table.Rows.Count > 0)
             {
                 DataRow row = table.Rows[0];
                 formaPago.Codigo = Convert.ToInt32(row["id_forma_pago"]);
                 formaPago.Tipo_pago = row["forma_pago"].ToString();
-                formaPago.Activo = Convert.ToInt32(row["Activo"]);
+            
 
 
             }

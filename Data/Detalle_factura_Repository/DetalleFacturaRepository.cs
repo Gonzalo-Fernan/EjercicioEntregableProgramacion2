@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using _421498_1w1_Gonzalo_Fernandez_Ejercicio_Entregable_1.Data.Articulos_Repository;
+using _421498_1w1_Gonzalo_Fernandez_Ejercicio_Entregable_1.Data.Factura_Repository;
 using _421498_1w1_Gonzalo_Fernandez_Ejercicio_Entregable_1.Domain;
 
 namespace _421498_1w1_Gonzalo_Fernandez_Ejercicio_Entregable_1.Data.Detalle_factura_Repository
@@ -55,12 +56,14 @@ namespace _421498_1w1_Gonzalo_Fernandez_Ejercicio_Entregable_1.Data.Detalle_fact
         }
         public void Add(Detalle_factura detalleFactura)
         {
+           
+
             _dataHelper.ExecuteSPNonQuery("sp_insertar_detalle_factura", new Dictionary<string, object>
-            {
+            {   
                 { "@id_articulo", detalleFactura.Articulo.Codigo },
                 { "@id_factura", detalleFactura.Factura },
                 { "@cantidad", detalleFactura.Cantidad },
-                { "@activo", detalleFactura.Activo   }
+                { "@activo", detalleFactura.Activo }
             });
             
         }

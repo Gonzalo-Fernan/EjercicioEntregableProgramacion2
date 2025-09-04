@@ -14,7 +14,7 @@ namespace _421498_1w1_Gonzalo_Fernandez_Ejercicio_Entregable_1.Data
         private SqlConnection _connection;
         public DataHelper()
         {
-            _connection = new SqlConnection("Data Source=DESKTOP-QR5EERE\\SQLEXPRESS;Initial Catalog=Facturacion_programacion;Integrated Security=True");
+            _connection = new SqlConnection("Data Source=DESKTOP-QR5EERE\\SQLEXPRESS;Initial Catalog=Facturacion_programacion;Integrated Security=True;");
         }
         public static DataHelper GetInstance()
         {
@@ -77,7 +77,7 @@ namespace _421498_1w1_Gonzalo_Fernandez_Ejercicio_Entregable_1.Data
             catch (Exception ex)
             {
                 rowsAffected = -1;
-                // Indicar error
+               
 
             }
             finally
