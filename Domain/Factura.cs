@@ -27,7 +27,12 @@ namespace _421498_1w1_Gonzalo_Fernandez_Ejercicio_Entregable_1.Domain
         }
         public override string ToString()
         {
-            return $"Codigo: {Codigo}, Fecha: {Fecha.ToShortDateString()}, Cliente: {Cliente}, Forma de Pago: [{Forma_pago}]";
+            
+            return $"Codigo: {Codigo}" +
+                    $" Fecha: {Fecha}" +
+                    $" Cliente: {Cliente}" +
+                    $" Forma de Pago: [{Forma_pago}]" +
+                    $" Detalles: [{string.Join(", ", Detalles)}]";
         }
     }
 }

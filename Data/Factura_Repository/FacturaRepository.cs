@@ -20,16 +20,17 @@ namespace _421498_1w1_Gonzalo_Fernandez_Ejercicio_Entregable_1.Data.Factura_Repo
         public List<Factura> GetAll()
         {
             List<Factura> lista = new List<Factura>();
-            DataTable table = _dataHelper.ExecuteSPQuery("sp_GetAllFactura");
+            DataTable table = _dataHelper.ExecuteSPQuery("sp_GetAllFacturas");
             foreach (DataRow row in table.Rows)
             {
+               
                 Factura factura = new Factura
                 {
                     Codigo = Convert.ToInt32(row["id_factura"]),
                     Forma_pago = new FormaPagoRepository(_dataHelper).GetById(Convert.ToInt32(row["id_forma_pago"])),
                     Fecha = Convert.ToDateTime(row["fecha"]),
                     Cliente = (string)row["cliente"],
-                    Detalles = new DetalleFacturaRepository(_dataHelper).GetAll().Where(d => d.Factura == Convert.ToInt32(row["id_factura"])).ToList()
+                    
                 };
                 lista.Add(factura);
             }
@@ -38,11 +39,12 @@ namespace _421498_1w1_Gonzalo_Fernandez_Ejercicio_Entregable_1.Data.Factura_Repo
         public Factura GetById(int id)
         {
             Factura factura = new Factura();
-            Dictionary<string, object> parameters = new Dictionary<string, object>
-            {
-                { "@id", id }
-            };
+            DetalleFacturaRepository detalleFacturaRepository = new DetalleFacturaRepository(_dataHelper);
+            Dictionary<string, object> parameters = new Dictionary<string, object>();
+            parameters.Add("@id_factura", id);   
+
             DataTable table = _dataHelper.ExecuteSPQuery("sp_GetFacturaById", parameters);
+
             if (table.Rows.Count > 0)
             {
                 DataRow row = table.Rows[0];
@@ -50,8 +52,9 @@ namespace _421498_1w1_Gonzalo_Fernandez_Ejercicio_Entregable_1.Data.Factura_Repo
                 factura.Forma_pago = new FormaPagoRepository(_dataHelper).GetById(Convert.ToInt32(row["id_forma_pago"]));
                 factura.Fecha = Convert.ToDateTime(row["fecha"]);
                 factura.Cliente = (string)row["cliente"];
-                factura.Detalles = new DetalleFacturaRepository(_dataHelper).GetAll().Where(d => d.Factura == Convert.ToInt32(row["id_factura"])).ToList();
-                factura.Activo = Convert.ToInt32(row["activo"]);
+                int id_factura = Convert.ToInt32(row["id_factura"]);
+                factura.Detalles = detalleFacturaRepository.GetById(id_factura);
+                factura.Activo = Convert.ToInt32(row["Activo"]);
             }
             return factura;
         }
@@ -82,20 +85,19 @@ namespace _421498_1w1_Gonzalo_Fernandez_Ejercicio_Entregable_1.Data.Factura_Repo
         }
         public void Update(Factura factura)
         {
-            _dataHelper.ExecuteSPNonQuery("sp_update_factura", new Dictionary<string, object>
+            _dataHelper.ExecuteSPNonQuery("sp_actualizar_factura", new Dictionary<string, object>
             {
                 { "@id_factura", factura.Codigo },
                 { "@id_forma_pago", factura.Forma_pago.Codigo },
                 { "@fecha", factura.Fecha },
                 { "@cliente", factura.Cliente },
-                {"@detalles", factura.Detalles },
-                { "@activo", factura.Activo   }
+                { "@activo", factura.Activo }
             });
 
         }
         public void Delete(int id)
         {
-            _dataHelper.ExecuteSPNonQuery("sp_delete_factura", new Dictionary<string, object>
+            _dataHelper.ExecuteSPNonQuery("sp_eliminar_factura", new Dictionary<string, object>
             {
                 { "@id_factura", id },
                 { "@activo", 0 }

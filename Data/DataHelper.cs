@@ -47,6 +47,7 @@ namespace _421498_1w1_Gonzalo_Fernandez_Ejercicio_Entregable_1.Data
             }
             catch (Exception ex)
             {
+                Console.WriteLine("Error en ExecuteSPQuery: " + ex.Message);
                 table = null;
             }
             finally

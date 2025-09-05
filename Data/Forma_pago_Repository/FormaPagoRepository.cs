@@ -64,7 +64,7 @@ namespace _421498_1w1_Gonzalo_Fernandez_Ejercicio_Entregable_1.Data.Forma_pago_R
         }
         public void Update(Forma_pago formaPago)
         {
-            _dataHelper.ExecuteSPNonQuery("sp_actualizar_forma_pago", new Dictionary<string, object>
+            _dataHelper.ExecuteSPNonQuery("sp_actualizar_formaPago", new Dictionary<string, object>
             {
                 { "@id_forma_pago", formaPago.Codigo },
                 { "@forma_pago", formaPago.Tipo_pago },
@@ -74,7 +74,7 @@ namespace _421498_1w1_Gonzalo_Fernandez_Ejercicio_Entregable_1.Data.Forma_pago_R
         }
         public void Delete(int id)
         {
-            _dataHelper.ExecuteSPNonQuery("sp_eliminar_forma_pago", new Dictionary<string, object>
+            _dataHelper.ExecuteSPNonQuery("sp_eliminar_formaPago", new Dictionary<string, object>
             {
                 { "@id_forma_pago", id },
                 { "@Activo", 0 }

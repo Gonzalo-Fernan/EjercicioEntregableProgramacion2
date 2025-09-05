@@ -21,7 +21,7 @@ namespace _421498_1w1_Gonzalo_Fernandez_Ejercicio_Entregable_1.Data.Detalle_fact
         public List<Detalle_factura> GetAll()
         {
             List<Detalle_factura> lista = new List<Detalle_factura>();
-            DataTable table = _dataHelper.ExecuteSPQuery("sp_GetAllDetalleFactura");
+            DataTable table = _dataHelper.ExecuteSPQuery("sp_GetAllDetallesFactura");
             foreach (DataRow row in table.Rows) 
             {
                 Detalle_factura detalleFactura = new Detalle_factura
@@ -36,21 +36,23 @@ namespace _421498_1w1_Gonzalo_Fernandez_Ejercicio_Entregable_1.Data.Detalle_fact
             return lista;
    
         }
-        public Detalle_factura GetById(int id)
+        public List<Detalle_factura> GetById(int id)
         {
-            Detalle_factura detalleFactura = new Detalle_factura();
+            List<Detalle_factura> lista = new List<Detalle_factura>();
             Dictionary<string, object> parametros = new Dictionary<string, object>();
             parametros.Add("@id_detalle_factura", id);
             DataTable table = _dataHelper.ExecuteSPQuery("sp_GetDetalleFacturaById", parametros);
             foreach (DataRow row in table.Rows)
             {
+                Detalle_factura detalleFactura = new Detalle_factura();
                 detalleFactura.Codigo = Convert.ToInt32(row["id_detalle_factura"]);
                 detalleFactura.Articulo = new ArticulosRepository(_dataHelper).GetById(Convert.ToInt32(row["id_articulo"]));
                 detalleFactura.Factura = Convert.ToInt32(row["id_factura"]);
                 detalleFactura.Cantidad = Convert.ToInt32(row["cantidad"]);
-                detalleFactura.Activo = Convert.ToInt32(row["activo"]);
+                detalleFactura.Activo = Convert.ToInt32(row["Activo"]);
+                lista.Add(detalleFactura);
             }
-            return detalleFactura;
+            return lista;
 
            
         }
